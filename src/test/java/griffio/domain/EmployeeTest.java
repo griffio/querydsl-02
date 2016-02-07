@@ -9,7 +9,11 @@ import java.math.BigDecimal;
 import java.util.List;
 
 import static com.querydsl.collections.CollQueryFactory.from;
-import static com.querydsl.core.group.GroupBy.*;
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.avg;
+import static com.querydsl.core.group.GroupBy.min;
+import static com.querydsl.core.group.GroupBy.max;
+import static org.truth0.Truth.ASSERT;
 
 @Test
 public class EmployeeTest {
@@ -23,22 +27,23 @@ public class EmployeeTest {
         new Employee(1L, 30, new BigDecimal("1.69"), 60),
         new Employee(1L, 35, new BigDecimal("1.74"), 70));
   }
-  // SELECT count(*), max(age), min(height), avg(weight) FROM person
+  // SELECT count(*), max(age), min(height), avg(weight) FROM Employee
   //(3, Optional[35], Optional[1.69], Optional[70.0])
 
   @Test
   public void aggregate() throws Exception {
 
-    ///Map? (3, Optional[35], Optional[1.69], Optional[70.0])
-
     List<Group> transform = from(QEmployee.employee, employees)
-        .transform(
-            groupBy(QEmployee.employee.id)
-                .list(max(QEmployee.employee.age), min(QEmployee.employee.bonus), avg(QEmployee.employee.retirementAge)));
+        .transform(groupBy(QEmployee.employee.id)
+            .list(
+                max(QEmployee.employee.age),
+                min(QEmployee.employee.bonus),
+                avg(QEmployee.employee.retirementAge)));
 
     for (Group group : transform) {
-      System.out.println("group = " + group);
+      ASSERT.that(group.getOne(QEmployee.employee.age)).isEqualTo(35);
+      ASSERT.that(group.getOne(QEmployee.employee.bonus)).isEqualTo(new BigDecimal("1.69"));
+      ASSERT.that(group.getOne(QEmployee.employee.retirementAge)).isEqualTo(70);
     }
-
   }
 }
