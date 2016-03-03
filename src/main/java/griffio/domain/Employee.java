@@ -1,9 +1,8 @@
 package griffio.domain;
 
-import com.google.common.base.Objects;
+import com.google.common.base.MoreObjects;
 import com.querydsl.core.annotations.QueryEntity;
 import com.querydsl.core.annotations.QueryProjection;
-
 import java.math.BigDecimal;
 
 @QueryEntity
@@ -24,7 +23,7 @@ public final class Employee {
 
   @Override
   public String toString() {
-    return Objects.toStringHelper(this)
+    return MoreObjects.toStringHelper(this)
         .add("id", id)
         .add("age", age)
         .add("bonus", bonus)
@@ -44,5 +43,7 @@ public final class Employee {
     return retirementAge;
   }
 
-  public Long getId() {return id;}
+  public Long getId() {
+    return id;
+  }
 }
