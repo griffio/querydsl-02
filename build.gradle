@@ -5,7 +5,7 @@ plugins {
 
 description = 'basic gradle build'
 group = "griffio"
-version = "0.1.0"
+version = "0.2.0"
 
 project.ext.sourceCompatibility = 1.7
 project.ext.targetCompatibility = 1.7
@@ -20,6 +20,7 @@ dependencies {
        "com.google.guava:guava:$guavaVersion")
   testCompile(
        "com.google.guava:guava-testlib:$guavaVersion",
+       "com.google.truth:truth:$truthVersion",
        "org.testng:testng:$testngVersion")
 }
 
@@ -36,5 +37,5 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = 2.10
+  gradleVersion = 2.14
 }
