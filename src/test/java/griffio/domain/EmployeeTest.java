@@ -13,7 +13,8 @@ import static com.querydsl.core.group.GroupBy.groupBy;
 import static com.querydsl.core.group.GroupBy.avg;
 import static com.querydsl.core.group.GroupBy.min;
 import static com.querydsl.core.group.GroupBy.max;
-import static org.truth0.Truth.ASSERT;
+
+import static com.google.common.truth.Truth.assertThat;
 
 @Test
 public class EmployeeTest {
@@ -41,9 +42,9 @@ public class EmployeeTest {
                 avg(QEmployee.employee.retirementAge)));
 
     for (Group group : transform) {
-      ASSERT.that(group.getOne(QEmployee.employee.age)).isEqualTo(35);
-      ASSERT.that(group.getOne(QEmployee.employee.bonus)).isEqualTo(new BigDecimal("1.69"));
-      ASSERT.that(group.getOne(QEmployee.employee.retirementAge)).isEqualTo(70);
+      assertThat(group.getOne(QEmployee.employee.age)).isEqualTo(35);
+      assertThat(group.getOne(QEmployee.employee.bonus)).isEqualTo(new BigDecimal("1.69"));
+      assertThat(group.getOne(QEmployee.employee.retirementAge)).isEqualTo(70);
     }
   }
 }

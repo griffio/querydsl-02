@@ -46,7 +46,7 @@ public class SalaryDetailTest {
 
     List<SalaryDetail> actual = from(salaryDetail, details).where(isBonusAboveThreshold).fetch();
 
-    assertThat(actual).has().exactly(bigBonus);
+    assertThat(actual).containsExactly(bigBonus);
   }
 
   public void relevant_salary_details_for_threshold() throws Exception {
@@ -61,7 +61,7 @@ public class SalaryDetailTest {
 
     List<SalaryDetail> actual = from(salaryDetail, details).select(salaryDetail).where(isRelevantSalaryName).fetch();
 
-    assertThat(actual).has().exactly(gross);
+    assertThat(actual).containsExactly(gross);
 
   }
 
@@ -69,7 +69,7 @@ public class SalaryDetailTest {
 
     BigDecimal actual = from(salaryDetail, details).select(salaryDetail.salary.sum()).fetchOne();
 
-    assertThat(actual).is(new BigDecimal("106000.00"));
+    assertThat(actual).isEqualTo(new BigDecimal("106000.00"));
   }
 
   public void unique_salaries_from_employees_salaries() {
@@ -83,7 +83,7 @@ public class SalaryDetailTest {
         .distinct()
         .fetch();
 
-    assertThat(actual).has().exactly("Bonus", "Commission", "Gross");
+    assertThat(actual).containsExactly("Bonus", "Commission", "Gross");
   }
 
   public void aggregated_by_salary_name() {
@@ -95,7 +95,7 @@ public class SalaryDetailTest {
         .transform(groupBy(salaryDetail.salaryName)
             .list(create(salaryDetail.salaryName, sum(salaryDetail.salary))));
 
-    assertThat(actual).has().exactly(smallBonus.add(bigBonus), commission);
+    assertThat(actual).containsExactly(smallBonus.add(bigBonus), commission);
   }
 
   public void sum_relevant_salary() throws Exception {
@@ -112,7 +112,7 @@ public class SalaryDetailTest {
     Map<String, BigDecimal> actual = from(salaryDetail, salaryDetails)
         .transform(groupBy(caseSalaryName).as(sum(salaryDetail.salary)));
 
-    assertThat(actual).hasKey(bigBonus.getSalaryName()).withValue(bigBonus.getSalary());
-    assertThat(actual).hasKey("Not Relevant").withValue(smallBonus.getSalary().add(commission.getSalary()));
+    assertThat(actual).containsEntry(bigBonus.getSalaryName(), bigBonus.getSalary());
+    assertThat(actual).containsEntry("Not Relevant", smallBonus.getSalary().add(commission.getSalary()));
   }
 }
