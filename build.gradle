@@ -5,7 +5,7 @@ plugins {
 
 description = 'basic gradle build'
 group = "griffio"
-version = "0.2.0"
+version = "0.3.0"
 
 project.ext.sourceCompatibility = 1.7
 project.ext.targetCompatibility = 1.7
@@ -37,5 +37,5 @@ test {
 }
 
 task wrapper(type: Wrapper) {
-  gradleVersion = 2.14
+  gradleVersion = "3.2.1"
 }
